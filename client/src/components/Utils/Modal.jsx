@@ -13,8 +13,6 @@ function Modal({ fields, onSubmit, modalID }) {
     onSubmit(data);
   };
 
-  console.log("sss");
-
   return (
     <div
       className="modal fade"

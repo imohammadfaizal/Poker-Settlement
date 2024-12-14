@@ -1,27 +1,54 @@
 import Modal from "../Utils/Modal";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Link,
+  TableSortLabel,
+  Box,
+  styled,
+} from "@mui/material";
+import GameTable from "./GameTable";
 
 function HomePage(params) {
   const fields = {
-    Game: "text",
-    Date: "date",
+    name: "text",
+    date: "date",
+  };
+  const [gameData, setGameData] = useState([]);
+
+  const fetchGameData = () => {
+    axios
+      .get("http://localhost:5000/api/games/getGames")
+      .then((response) => {
+        setGameData(response.data);
+        console.log("Updated game data:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching game data:", error);
+      });
   };
 
   const handleSubmit = (formData) => {
     console.log("Form Submitted:", formData);
-  };
-
-  useEffect(() => {
     axios
-      .get("http://localhost:5000/api/games/getGames")
+      .post("http://localhost:5000/api/games/addGame",formData)
       .then((response) => {
-        console.log("Game created successfully:", response.data);
+        fetchGameData()
       })
       .catch((error) => {
         console.error("Error creating game:", error);
       });
+  };
+
+  useEffect(() => {
+    fetchGameData();
   }, []);
 
   return (
@@ -29,7 +56,7 @@ function HomePage(params) {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <div className="container d-flex justify-content-around">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand fw-bold" href="#">
               POKER
             </a>
             <button
@@ -59,7 +86,9 @@ function HomePage(params) {
           </div>
         </div>
       </nav>
-      <div className="container"></div>
+      <div className="container">
+        <GameTable gameData={gameData} />
+      </div>
       <Modal fields={fields} onSubmit={handleSubmit} modalID="addNewGame" />
     </>
   );
