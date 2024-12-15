@@ -10,7 +10,9 @@ router.post("/addPlayer", async (req, res) => {
     const newPlayer = new Player({ name, finalAmount, gameId });
     const savedPlayer = await newPlayer.save();
 
-    await Game.findByIdAndUpdate(gameId, { $push: { players: savedPlayer._id } });
+    await Game.findByIdAndUpdate(gameId, {
+      $push: { players: savedPlayer._id },
+    });
 
     res.status(201).json(savedPlayer);
   } catch (err) {

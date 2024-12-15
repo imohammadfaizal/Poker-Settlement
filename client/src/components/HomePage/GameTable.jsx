@@ -1,5 +1,4 @@
-import Modal from "../Utils/Modal";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -7,49 +6,40 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
   Link,
   TableSortLabel,
-  Box,
-  styled,
 } from "@mui/material";
 
-function GameTable({gameData}) {
+function GameTable({ gameData }) {
   return (
     <>
       <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell className="width-260">
-                    <TableSortLabel>
-                      GAME
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell className="width-196">
-                    <TableSortLabel>
-                      DATE
-                    </TableSortLabel>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {gameData.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Link href={row.url} role="button" rel="noopener">
-                        {row.name}
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      {row.date}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/* <div className="pagination-container d-flex align-items-center justify-content-between">
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell className="width-260">
+                <TableSortLabel>GAME</TableSortLabel>
+              </TableCell>
+              <TableCell className="width-196">
+                <TableSortLabel>DATE</TableSortLabel>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {gameData.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Link href={row.url} role="button" rel="noopener">
+                    {row.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{row.date}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/* <div className="pagination-container d-flex align-items-center justify-content-between">
             <TablePagination
               component="div"
               count={patientData.length}

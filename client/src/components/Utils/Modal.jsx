@@ -38,7 +38,10 @@ function Modal({ fields, onSubmit, modalID }) {
             <div className="modal-body">
               {Object.entries(fields).map(([name, type]) => (
                 <div className="mb-3 row" key={name}>
-                  <label htmlFor={name} className="form-label col-2 text-start">
+                  <label
+                    htmlFor={name}
+                    className="form-label col-2 text-start m-0 d-flex align-items-center"
+                  >
                     {name.charAt(0).toUpperCase() + name.slice(1)}
                   </label>
                   <div className="col-10">

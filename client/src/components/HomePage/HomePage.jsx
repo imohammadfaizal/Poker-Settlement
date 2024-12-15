@@ -1,19 +1,7 @@
 import Modal from "../Utils/Modal";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TablePagination,
-  Link,
-  TableSortLabel,
-  Box,
-  styled,
-} from "@mui/material";
+import { getGames, addGame } from "../../service/gameServices";
 import GameTable from "./GameTable";
 
 function HomePage(params) {
@@ -23,28 +11,22 @@ function HomePage(params) {
   };
   const [gameData, setGameData] = useState([]);
 
-  const fetchGameData = () => {
-    axios
-      .get("http://localhost:5000/api/games/getGames")
-      .then((response) => {
-        setGameData(response.data);
-        console.log("Updated game data:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching game data:", error);
-      });
+  const fetchGameData = async () => {
+    try {
+      const response = await getGames({});
+      setGameData(response);
+    } catch (err) {
+      console.log("Error fetching game data:", err);
+    }
   };
 
-  const handleSubmit = (formData) => {
-    console.log("Form Submitted:", formData);
-    axios
-      .post("http://localhost:5000/api/games/addGame",formData)
-      .then((response) => {
-        fetchGameData()
-      })
-      .catch((error) => {
-        console.error("Error creating game:", error);
-      });
+  const handleSubmit = async (formData) => {
+    try {
+      const response = await addGame({ body: formData });
+      fetchGameData();
+    } catch (err) {
+      console.log("Error fetching game data:", err);
+    }
   };
 
   useEffect(() => {
@@ -56,9 +38,7 @@ function HomePage(params) {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <div className="container d-flex justify-content-around">
-            <a className="navbar-brand fw-bold" href="#">
-              POKER
-            </a>
+            <span className="navbar-brand fw-bold">POKER</span>
             <button
               className="navbar-toggler"
               type="button"
@@ -83,13 +63,17 @@ function HomePage(params) {
                 Add New Game
               </button>
             </div>
+            <Modal
+              fields={fields}
+              onSubmit={handleSubmit}
+              modalID="addNewGame"
+            />
           </div>
         </div>
       </nav>
       <div className="container">
         <GameTable gameData={gameData} />
       </div>
-      <Modal fields={fields} onSubmit={handleSubmit} modalID="addNewGame" />
     </>
   );
 }
