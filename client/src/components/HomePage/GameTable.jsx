@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,7 +10,20 @@ import {
   TableSortLabel,
 } from "@mui/material";
 
-function GameTable({ gameData }) {
+function GameTable({ gameData, setView, setPlayerArray }) {
+
+  function handleClick(evt){
+    setView("players")
+    let pos = evt.target.dataset.id
+    setPlayerArray(gameData[pos].players)
+  }
+
+  useEffect(() => {
+    if(gameData.length > 0){
+      console.log(gameData[0].players);
+    }
+  }, [gameData])
+  
   return (
     <>
       <TableContainer>
@@ -29,7 +42,7 @@ function GameTable({ gameData }) {
             {gameData.map((row, index) => (
               <TableRow key={index}>
                 <TableCell>
-                  <Link href={row.url} role="button" rel="noopener">
+                  <Link href={row.url} onClick={handleClick} data-id={index} role="button" rel="noopener">
                     {row.name}
                   </Link>
                 </TableCell>
