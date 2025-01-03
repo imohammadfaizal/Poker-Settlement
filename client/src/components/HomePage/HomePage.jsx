@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getGames, addGame } from "../../service/gameServices";
 import GameTable from "./GameTable";
+import PlayerTable from "./PlayerTable";
 
 function HomePage(params) {
   const fields = {
@@ -10,6 +11,8 @@ function HomePage(params) {
     date: "date",
   };
   const [gameData, setGameData] = useState([]);
+  const [playerArray, setPlayerArray] = useState([]);
+  const [view, setView] = useState("games");
 
   const fetchGameData = async () => {
     try {
@@ -21,6 +24,8 @@ function HomePage(params) {
   };
 
   const handleSubmit = async (formData) => {
+    console.log(formData);
+
     try {
       const response = await addGame({ body: formData });
       fetchGameData();
@@ -38,7 +43,9 @@ function HomePage(params) {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <div className="container d-flex justify-content-around">
-            <span className="navbar-brand fw-bold">POKER</span>
+            <span className="navbar-brand fw-bold">
+              POKER <i className="bi bi-suit-spade-fill"></i>
+            </span>
             <button
               className="navbar-toggler"
               type="button"
@@ -72,7 +79,15 @@ function HomePage(params) {
         </div>
       </nav>
       <div className="container">
-        <GameTable gameData={gameData} />
+        {view === "games" && (
+          <GameTable
+            gameData={gameData}
+            playerArray={playerArray}
+            setPlayerArray={setPlayerArray}
+            setView={setView}
+          />
+        )}
+        {view === "players" && <PlayerTable playerArray={playerArray} />}
       </div>
     </>
   );

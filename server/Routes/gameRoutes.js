@@ -3,10 +3,10 @@ const router = express.Router();
 const Game = require("../Models/Game");
 
 router.post("/addGame", async (req, res) => {
-  const { name, date } = req.body;
+  const { name, date, players } = req.body;
 
   try {
-    const newGame = new Game({ name, date });
+    const newGame = new Game({ name, date, players });
     const savedGame = await newGame.save();
     res.status(201).json(savedGame);
   } catch (err) {
